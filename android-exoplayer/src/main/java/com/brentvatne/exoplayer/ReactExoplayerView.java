@@ -51,7 +51,6 @@ import com.google.android.exoplayer2.util.Util;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.lang.Math;
 
 @SuppressLint("ViewConstructor")
 class ReactExoplayerView extends FrameLayout implements
@@ -241,9 +240,16 @@ class ReactExoplayerView extends FrameLayout implements
                 return new DashMediaSource(uri, buildDataSourceFactory(false),
                         new DefaultDashChunkSource.Factory(mediaDataSourceFactory), mainHandler, null);
             case C.TYPE_HLS:
-                return new HlsMediaSource(uri, mediaDataSourceFactory, mainHandler, null);
+                Log.i("adnaan","is of type HLS ok");
+                HlsMediaSource.Factory hlsMediaSourceFactory = new HlsMediaSource.Factory(mediaDataSourceFactory);
+               // hlsMediaSourceFactory.setExtractorFactory(new CustomHlsExtractorFactory());
+
+               MediaSource hlsMediaSource =  hlsMediaSourceFactory.createMediaSource(uri, mainHandler, null);
+                return hlsMediaSource;
             case C.TYPE_OTHER:
-                return new ExtractorMediaSource(uri, mediaDataSourceFactory, new DefaultExtractorsFactory(),
+                DefaultExtractorsFactory defaultExtractorsFactory2 = new DefaultExtractorsFactory();
+                Log.i("adnaan","set tsextractorsfactory");
+                return new ExtractorMediaSource(uri, mediaDataSourceFactory, defaultExtractorsFactory2,
                         mainHandler, null);
             default: {
                 throw new IllegalStateException("Unsupported type: " + type);
@@ -455,13 +461,26 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     @Override
-    public void onPositionDiscontinuity() {
+    public void onPositionDiscontinuity(int i) {
         if (playerNeedsSource) {
             // This will only occur if the user has performed a seek whilst in the error state. Update the
             // resume position so that if the user then retries, playback will resume from the position to
             // which they seeked.
             updateResumePosition();
         }
+
+    }
+
+    @Override
+    public void onRepeatModeChanged(int i) {
+        // Do nothing.
+    }
+
+
+
+    @Override
+    public void onShuffleModeEnabledChanged(boolean b) {
+        // Do nothing.
     }
 
     @Override
@@ -637,4 +656,10 @@ class ReactExoplayerView extends FrameLayout implements
     public void setDisableFocus(boolean disableFocus) {
         this.disableFocus = disableFocus;
     }
+
+    @Override
+    public void onSeekProcessed() {
+        // Do nothing.
+    }
+
 }

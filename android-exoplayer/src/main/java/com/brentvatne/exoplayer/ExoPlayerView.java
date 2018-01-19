@@ -212,7 +212,25 @@ public final class ExoPlayerView extends FrameLayout {
         }
 
         @Override
-        public void onPositionDiscontinuity() {
+        public void onPositionDiscontinuity(int i) {
+            // Do nothing.
+        }
+
+        @Override
+        public void onRepeatModeChanged(int i) {
+            // Do nothing.
+        }
+
+
+
+        @Override
+        public void onSeekProcessed() {
+            // Do nothing.
+        }
+
+
+        @Override
+        public void onShuffleModeEnabledChanged(boolean b) {
             // Do nothing.
         }
 
