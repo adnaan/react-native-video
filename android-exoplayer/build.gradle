@@ -17,8 +17,6 @@ dependencies {
     compile project(':exoplayer-library-dash')
     compile project(':exoplayer-library-ui')
     compile project(':exoplayer-library-smoothstreaming')
-    compile('com.google.android.exoplayer:extension-okhttp:2.6.1') {
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-    }
+    compile project(':exoplayer-extension-okhttp')
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
 }

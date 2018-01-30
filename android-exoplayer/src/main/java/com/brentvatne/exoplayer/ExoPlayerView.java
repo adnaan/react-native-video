@@ -96,11 +96,11 @@ public final class ExoPlayerView extends FrameLayout {
             return;
         }
         if (this.player != null) {
-            this.player.setTextOutput(null);
-            this.player.setVideoListener(null);
+            this.player.addTextOutput(null);
+            this.player.addVideoListener(null);
             this.player.removeListener(componentListener);
             this.player.setVideoSurface(null);
-            this.player.setMetadataOutput(componentListener);
+            this.player.addMetadataOutput(componentListener);
         }
         this.player = player;
         shutterView.setVisibility(VISIBLE);
@@ -110,10 +110,12 @@ public final class ExoPlayerView extends FrameLayout {
             } else if (surfaceView instanceof SurfaceView) {
                 player.setVideoSurfaceView((SurfaceView) surfaceView);
             }
-            player.setVideoListener(componentListener);
+
+
+            player.addVideoListener(componentListener);
             player.addListener(componentListener);
-            player.setTextOutput(componentListener);
-            player.setMetadataOutput(componentListener);
+            player.addTextOutput(componentListener);
+            player.addMetadataOutput(componentListener);
         }
     }
 
@@ -155,6 +157,7 @@ public final class ExoPlayerView extends FrameLayout {
             return;
         }
         TrackSelectionArray selections = player.getCurrentTrackSelections();
+        Log.i("adnaan",selections.toString());
         for (int i = 0; i < selections.length; i++) {
             if (player.getRendererType(i) == C.TRACK_TYPE_VIDEO && selections.get(i) != null) {
                 // Video enabled so artwork must be hidden. If the shutter is closed, it will be opened in
@@ -208,7 +211,7 @@ public final class ExoPlayerView extends FrameLayout {
 
         @Override
         public void onPlayerError(ExoPlaybackException e) {
-            // Do nothing.
+           Log.d("ExoPlayerView","onPlayerError: " + e.getMessage());
         }
 
         @Override

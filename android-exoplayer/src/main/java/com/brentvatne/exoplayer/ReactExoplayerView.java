@@ -242,8 +242,7 @@ class ReactExoplayerView extends FrameLayout implements
             case C.TYPE_HLS:
                 Log.i("adnaan","is of type HLS ok");
                 HlsMediaSource.Factory hlsMediaSourceFactory = new HlsMediaSource.Factory(mediaDataSourceFactory);
-               // hlsMediaSourceFactory.setExtractorFactory(new CustomHlsExtractorFactory());
-
+               hlsMediaSourceFactory.setExtractorFactory(new CustomHlsExtractorFactory());
                MediaSource hlsMediaSource =  hlsMediaSourceFactory.createMediaSource(uri, mainHandler, null);
                 return hlsMediaSource;
             case C.TYPE_OTHER:
