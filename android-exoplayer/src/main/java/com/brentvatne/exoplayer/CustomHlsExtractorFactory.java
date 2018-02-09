@@ -2,6 +2,7 @@ package com.brentvatne.exoplayer;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 
 import com.google.android.exoplayer2.Format;
@@ -75,25 +76,40 @@ public final class CustomHlsExtractorFactory implements HlsExtractorFactory {
                 muxedCaptionFormats = Collections.emptyList();
             }
             String codecs = format.codecs;
-           // Log.d("CustomHlsExFctry","codecs: " + codecs + "containerMimeType: " + format.containerMimeType);
+            Log.d("CustomHlsExFctry","uri: " + uri.toString());
+           Log.d("CustomHlsExFctry","segment: " + lastPathSegment + " codecs: " + codecs + " containerMimeType: " + format.containerMimeType + " format: " + format.toString() );
+           Log.d("CustomHlsExFctry","esr : " + esReaderFactoryFlags);
             if (!TextUtils.isEmpty(codecs)) {
                 // Sometimes AAC and H264 streams are declared in TS chunks even though they don't really
                 // exist. If we know from the codec attribute that they don't exist, then we can
                 // explicitly ignore them even if they're declared.
                 if (!MimeTypes.AUDIO_AAC.equals(MimeTypes.getAudioMediaMimeType(codecs))) {
+                    Log.d("CustomHlsExFctry","ignore aac " + MimeTypes.getAudioMediaMimeType(codecs));
                     esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_AAC_STREAM;
                 }
                 if (!MimeTypes.VIDEO_H264.equals(MimeTypes.getVideoMediaMimeType(codecs))) {
+                    Log.d("CustomHlsExFctry","ignore h264");
                     esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_H264_STREAM;
                 }
             }
 
+             Log.d("CustomHlsExtractFactory", "format.id " + format.id);
 
-            if (codecs == null && format.containerMimeType == "application/x-mpegURL"){
-                esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_H264_STREAM;
-            }
+             if (MimeTypes.VIDEO_H264.equals(MimeTypes.getVideoMediaMimeType(codecs))) {
+                 Log.d("CustomHlsExFctry","ignore aac " + MimeTypes.getAudioMediaMimeType(codecs));
+                 esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_H264_STREAM;
+             }
 
-           // Log.d("CustomHlsExFctry","esr : " + esReaderFactoryFlags);
+//
+//            if ((codecs == null && format.containerMimeType == "application/x-mpegURL") ){
+//
+//                Log.d("CustomHlsExFctry","ignore h264 " + MimeTypes.getAudioMediaMimeType(codecs));
+//                esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_AAC_STREAM;
+//            }
+
+
+
+            Log.d("CustomHlsExtractFactory","esr : " + esReaderFactoryFlags);
             extractor = new TsExtractor(TsExtractor.MODE_HLS, timestampAdjuster,
                     new DefaultTsPayloadReaderFactory(esReaderFactoryFlags, muxedCaptionFormats));
         }
