@@ -97,15 +97,15 @@ public final class CustomHlsExtractorFactory implements HlsExtractorFactory {
 
              if (MimeTypes.VIDEO_H264.equals(MimeTypes.getVideoMediaMimeType(codecs))) {
                  Log.d("CustomHlsExFctry","ignore aac " + MimeTypes.getAudioMediaMimeType(codecs));
-                 esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_H264_STREAM;
+                 esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_AAC_STREAM;
              }
 
-//
-//            if ((codecs == null && format.containerMimeType == "application/x-mpegURL") ){
-//
-//                Log.d("CustomHlsExFctry","ignore h264 " + MimeTypes.getAudioMediaMimeType(codecs));
-//                esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_AAC_STREAM;
-//            }
+
+            if ((codecs == null && format.containerMimeType == "application/x-mpegURL") ){
+
+                Log.d("CustomHlsExFctry","ignore h264 " + MimeTypes.getAudioMediaMimeType(codecs));
+                esReaderFactoryFlags |= DefaultTsPayloadReaderFactory.FLAG_IGNORE_H264_STREAM;
+            }
 
 
 
