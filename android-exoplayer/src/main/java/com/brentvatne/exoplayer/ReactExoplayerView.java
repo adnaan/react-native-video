@@ -226,7 +226,10 @@ class ReactExoplayerView extends FrameLayout implements
                 return new DashMediaSource(uri, buildDataSourceFactory(false),
                         new DefaultDashChunkSource.Factory(mediaDataSourceFactory), mainHandler, null);
             case C.TYPE_HLS:
-                return new HlsMediaSource(uri, mediaDataSourceFactory, mainHandler, null);
+                    HlsMediaSource.Factory hlsMediaSourceFactory = new HlsMediaSource.Factory(mediaDataSourceFactory);
+                    hlsMediaSourceFactory.setExtractorFactory(new CustomHlsExtractorFactory());
+                    MediaSource hlsMediaSource =  hlsMediaSourceFactory.createMediaSource(uri, mainHandler, null);
+                return hlsMediaSource;
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource(uri, mediaDataSourceFactory, new DefaultExtractorsFactory(),
                         mainHandler, null);
